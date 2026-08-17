@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Local Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+.env.development.local
+.env.production.local
+**/.env
+**/.env.*
+
+# Production Builds
+dist/
+**/dist/
+
+# Local Database Files
+*.sqlite
+*.db
+backend/database.sqlite
+backend/fee-managment.sqlite
+
+# OS and Editor configurations
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
