@@ -27,3 +27,4 @@ backend/fee-managment.sqlite
 .vscode/
 .idea/
 Thumbs.db
+frontend/.git_backup/
