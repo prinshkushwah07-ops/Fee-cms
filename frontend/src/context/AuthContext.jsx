@@ -2,6 +2,10 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+console.log('DEBUG (AuthContext): API_URL is:', API_URL);
+console.log('DEBUG (AuthContext): VITE_API_URL from env is:', import.meta.env.VITE_API_URL);
+console.log('DEBUG (AuthContext): All env keys:', Object.keys(import.meta.env));
+
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
