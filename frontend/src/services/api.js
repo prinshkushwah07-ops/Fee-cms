@@ -75,7 +75,12 @@ const request = async (method, endpoint, data = null) => {
     if (!res.ok) {
       const parsedErr = await parseError(null, res);
       if (import.meta.env.DEV) {
-        console.error(`API Error (${method} ${endpoint}):`, parsedErr.message);
+        console.group('=== Nexvora API Request Error ===');
+        console.error('API Base URL:', BASE_URL);
+        console.error('Request Endpoint:', endpoint);
+        console.error('HTTP Status Code:', res.status);
+        console.error('Response Error:', parsedErr.message);
+        console.groupEnd();
       }
       throw parsedErr;
     }
@@ -95,7 +100,12 @@ const request = async (method, endpoint, data = null) => {
     }
     const parsedErr = await parseError(err);
     if (import.meta.env.DEV) {
-      console.error(`Network/CORS Error (${method} ${endpoint}):`, err);
+      console.group('=== Nexvora API Network/CORS Error ===');
+      console.error('API Base URL:', BASE_URL);
+      console.error('Request Endpoint:', endpoint);
+      console.error('Network Error Details:', err);
+      console.error('Response Error Message:', parsedErr.message);
+      console.groupEnd();
     }
     throw parsedErr;
   }
