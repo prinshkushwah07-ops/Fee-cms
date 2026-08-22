@@ -174,6 +174,7 @@ const Login = () => {
                     }
                   }}
                   disabled={isSubmitting}
+                  autoComplete="username"
                 />
                 <span className="login-field-icon">
                   <User size={16} />
@@ -204,6 +205,7 @@ const Login = () => {
                     }
                   }}
                   disabled={isSubmitting}
+                  autoComplete="current-password"
                 />
                 <span className="login-field-icon">
                   <Lock size={16} />
