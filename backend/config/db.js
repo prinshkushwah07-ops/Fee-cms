@@ -19,12 +19,11 @@ const pool = mysql.createPool({
 const testConnection = async () => {
   try {
     const connection = await pool.getConnection();
-    console.log('MySQL Database Connected Successfully');
+    console.log('MySQL connected');
     connection.release();
   } catch (error) {
+    console.error('MySQL connection failed:', error.message);
     console.error('======================================================');
-    console.error('MySQL Database Connection FAILED!');
-    console.error('Error Details:', error.message);
     console.error('Please make sure:');
     console.error('1. Your MySQL server is running.');
     console.error('2. The database "fee-management" exists.');

@@ -48,6 +48,12 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json());
 
+// Logger middleware
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.path} - Origin: ${req.get('origin') || 'No Origin'}`);
+  next();
+});
+
 // Basic test route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Nexvora Fee Management System MySQL API.' });
@@ -57,7 +63,7 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({
     success: true,
-    message: 'API is running'
+    message: 'Fee Management API is running'
   });
 });
 
@@ -67,15 +73,20 @@ app.get('/api/health', (req, res) => {
 // POST /api/auth/login
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
+  console.log(`[AUTH] Login route reached for username: "${username}"`);
   
   if (!username || !password) {
+    console.log('[AUTH] Login failed: Missing credentials');
     return res.status(400).json({ message: 'Username and password are required' });
   }
 
   try {
+    console.log('[AUTH] Querying database for user matching username...');
     const [rows] = await pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password]);
+    console.log('[AUTH] Database query executed successfully');
     
     if (rows.length > 0) {
+      console.log(`[AUTH] Authentication successful for username: "${username}"`);
       res.json({
         success: true,
         user: {
@@ -86,9 +97,11 @@ app.post('/api/auth/login', async (req, res) => {
         }
       });
     } else {
+      console.log(`[AUTH] Authentication failed: Invalid username or password for "${username}"`);
       res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (err) {
+    console.error('[AUTH] Database connection or query error during login:', err.message);
     res.status(500).json({ message: err.message });
   }
 });
@@ -684,10 +697,14 @@ app.get('/api/reports/dashboard', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV !== 'production') {
+// Start listening if not running on Vercel Serverless Functions
+const isVercel = process.env.VERCEL || process.env.NOW_BUILDER;
+if (!isVercel) {
   app.listen(PORT, () => {
-    console.log(`Express MySQL Server running on port ${PORT}`);
+    console.log(`Server started on port ${PORT}`);
   });
+} else {
+  console.log(`Running in serverless environment (Vercel detected)`);
 }
 
 export default app;
