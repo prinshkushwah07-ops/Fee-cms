@@ -30,7 +30,7 @@ const corsOptions = {
       const cleanAllowed = allowedOrigin.replace(/\/$/, '');
       const cleanOrigin = origin.replace(/\/$/, '');
       return cleanAllowed === cleanOrigin;
-    });
+    }) || /\.vercel\.app$/i.test(origin);
 
     if (isAllowed) {
       callback(null, true);
