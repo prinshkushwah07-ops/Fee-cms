@@ -1,51 +1,110 @@
 console.log('DEBUG: VITE_API_URL from env is:', import.meta.env.VITE_API_URL);
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Helper to sanitize endpoint and append prefix if missing
+const getFullUrl = (endpoint) => {
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  return `${BASE_URL.replace(/\/$/, '')}${cleanEndpoint}`;
+};
 
-export const api = {
-  get: async (endpoint) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`);
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || 'Server request failed.');
+// Custom error handling mapping function
+const parseError = async (err, response = null) => {
+  // If response is null, it's a network/TypeError/CORS issue
+  if (!response) {
+    const isNetworkError = err instanceof TypeError || err.message?.includes('fetch') || err.message?.includes('network');
+    if (isNetworkError) {
+      return new Error('Unable to connect to the backend server. Please verify your internet connection or check if the API service is running.');
     }
-    return res.json();
-  },
+    return err;
+  }
 
-  post: async (endpoint, data) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || 'Server request failed.');
-    }
-    return res.json();
-  },
+  let responseData = {};
+  try {
+    responseData = await response.json();
+  } catch (parseErr) {
+    // If not JSON, ignore
+  }
 
-  put: async (endpoint, data) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || 'Server request failed.');
-    }
-    return res.json();
-  },
+  const message = responseData.message || responseData.error || '';
+  
+  if (response.status === 401) {
+    return new Error(message || 'Invalid username or password.');
+  }
 
-  delete: async (endpoint) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'DELETE'
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || 'Server request failed.');
+  if (response.status === 400) {
+    return new Error(message || 'Required input parameters are missing or invalid.');
+  }
+
+  if (response.status === 403) {
+    return new Error(message || 'Access denied. You do not have permissions for this action.');
+  }
+
+  if (response.status === 404) {
+    return new Error(message || 'Requested resource or API endpoint not found.');
+  }
+
+  if (response.status >= 500) {
+    // Check if error contains database or SQL terms
+    const isDbError = /db|mysql|connect|econnrefused|query|pool|sql/i.test(message);
+    if (isDbError) {
+      if (import.meta.env.DEV) {
+        console.error('DEVELOPMENT DB ERROR:', message);
+      }
+      return new Error('Database connection failure. The server is unable to connect to the database.');
     }
-    return res.json();
+    return new Error(message || 'Server error: An unexpected error occurred on the server.');
+  }
+
+  return new Error(message || `Server request failed with status ${response.status}`);
+};
+
+const request = async (method, endpoint, data = null) => {
+  const url = getFullUrl(endpoint);
+  const options = {
+    method,
+    headers: {}
+  };
+
+  if (data) {
+    options.headers['Content-Type'] = 'application/json';
+    options.body = JSON.stringify(data);
+  }
+
+  try {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      const parsedErr = await parseError(null, res);
+      if (import.meta.env.DEV) {
+        console.error(`API Error (${method} ${endpoint}):`, parsedErr.message);
+      }
+      throw parsedErr;
+    }
+    return await res.json();
+  } catch (err) {
+    // If it's already a parsed Error from response, rethrow it
+    if (err.message && (
+      err.message.includes('Unable to connect') ||
+      err.message.includes('Database connection') ||
+      err.message.includes('Invalid username') ||
+      err.message.includes('Required input') ||
+      err.message.includes('Access denied') ||
+      err.message.includes('not found') ||
+      err.message.includes('Server error')
+    )) {
+      throw err;
+    }
+    const parsedErr = await parseError(err);
+    if (import.meta.env.DEV) {
+      console.error(`Network/CORS Error (${method} ${endpoint}):`, err);
+    }
+    throw parsedErr;
   }
 };
+
+export const api = {
+  get: (endpoint) => request('GET', endpoint),
+  post: (endpoint, data) => request('POST', endpoint, data),
+  put: (endpoint, data) => request('PUT', endpoint, data),
+  delete: (endpoint) => request('DELETE', endpoint)
+};
+
