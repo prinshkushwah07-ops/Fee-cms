@@ -184,7 +184,8 @@ app.delete('/api/sessions/:id', async (req, res) => {
   }
 });
 
-// 3. Student Routes
+// 3. Student RoutesPrinsh@2004
+
 // GET /api/students
 app.get('/api/students', async (req, res) => {
   try {
