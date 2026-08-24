@@ -75,8 +75,8 @@ const AppLayout = () => {
               <Menu size={20} />
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span className="header-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                School ERP Portal
+              <span className="header-title">
+                <span className="header-title-text">School ERP Portal</span>
               </span>
             </div>
           </div>
@@ -86,7 +86,7 @@ const AppLayout = () => {
             {activeSession && (
               <div className="header-session-select">
                 <Calendar size={16} style={{ color: 'var(--primary)' }} />
-                <span>Session: <strong>{activeSession.year}</strong></span>
+                <span className="header-session-text">Session: <strong>{activeSession.year}</strong></span>
               </div>
             )}
             

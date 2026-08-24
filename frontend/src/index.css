@@ -122,6 +122,15 @@ body {
   .form-group-span-2 {
     grid-column: span 1 !important;
   }
+  .header-title-text {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-session-select {
+    display: none;
+  }
 }
 
 /* Typography */
