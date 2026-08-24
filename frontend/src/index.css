@@ -82,6 +82,7 @@ body {
   flex-direction: column;
   min-width: 0;
   background-color: var(--bg-main);
+  margin-left: 280px;
 }
 
 .content-body {
@@ -953,8 +954,9 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-light);
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   z-index: 100;
   flex-shrink: 0;
   transition: transform var(--transition-normal);
@@ -1227,6 +1229,10 @@ h1, h2, h3, h4, h5, h6 {
   
   .fee-collection-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .main-content {
+    margin-left: 0;
   }
 }
 
