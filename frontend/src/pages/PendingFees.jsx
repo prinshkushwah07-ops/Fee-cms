@@ -53,7 +53,9 @@ const PendingFees = () => {
 
   // List unique classes in pending database for filtering
   const classesList = useMemo(() => {
-    const classes = pendingReport.map(item => item.class.split('-')[0].trim());
+    const classes = pendingReport
+      .map(item => (item.class && typeof item.class === 'string' ? item.class.split('-')[0].trim() : ''))
+      .filter(Boolean);
     return [...new Set(classes)].sort();
   }, [pendingReport]);
 
@@ -61,13 +63,13 @@ const PendingFees = () => {
   const filteredReport = useMemo(() => {
     return pendingReport.filter(item => {
       if (!selectedClass) return true;
-      return item.class.startsWith(selectedClass);
+      return item.class && typeof item.class === 'string' && item.class.startsWith(selectedClass);
     });
   }, [pendingReport, selectedClass]);
 
   // Sum total outstanding pending amount
   const totalOutstandingAmount = useMemo(() => {
-    return filteredReport.reduce((acc, item) => acc + item.pendingAmount, 0);
+    return filteredReport.reduce((acc, item) => acc + (item.pendingAmount || 0), 0);
   }, [filteredReport]);
 
   // DataTable columns definition
@@ -103,21 +105,25 @@ const PendingFees = () => {
       key: 'pendingMonths',
       render: (row) => (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', maxWidth: '280px' }}>
-          {row.pendingMonths.map((m, idx) => (
-            <span 
-              key={idx} 
-              style={{
-                fontSize: '0.75rem',
-                backgroundColor: 'var(--danger-light)',
-                color: 'var(--danger-text)',
-                padding: '2px 6px',
-                borderRadius: '4px',
-                fontWeight: 500
-              }}
-            >
-              {m}
-            </span>
-          ))}
+          {row.pendingMonths && Array.isArray(row.pendingMonths) ? (
+            row.pendingMonths.map((m, idx) => (
+              <span 
+                key={idx} 
+                style={{
+                  fontSize: '0.75rem',
+                  backgroundColor: 'var(--danger-light)',
+                  color: 'var(--danger-text)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontWeight: 500
+                }}
+              >
+                {m}
+              </span>
+            ))
+          ) : (
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>None</span>
+          )}
         </div>
       )
     },
