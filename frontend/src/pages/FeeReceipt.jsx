@@ -213,7 +213,7 @@ const FeeReceipt = () => {
           </div>
 
           {/* Terms & Signature fields */}
-          <div style={{ fontSize: '0.6875rem', color: '#64748b', textAlign: 'left', marginTop: '3rem', borderTop: '1px solid #f1f5f9', paddingTop: '1rem' }}>
+          <div className="receipt-terms">
             <strong>Terms & Notes:</strong>
             <p>1. This is a computer-generated invoice and requires no physical seal signatures under local audit codes.</p>
             <p>2. Fees once paid are non-refundable and non-transferable under standard institute policies.</p>

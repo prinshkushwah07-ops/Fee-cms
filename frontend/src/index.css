@@ -802,10 +802,24 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
+.receipt-terms {
+  font-size: 0.6875rem;
+  color: #64748b;
+  text-align: left;
+  margin-top: 3rem;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 1rem;
+}
+
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
   body {
     background-color: white;
     color: black;
+    font-size: 12px;
   }
   .app-container {
     display: block;
@@ -832,6 +846,48 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
     box-shadow: none;
     padding: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .receipt-header {
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .receipt-school-info h2 {
+    font-size: 1.35rem !important;
+  }
+  .receipt-title-box h3 {
+    font-size: 1.25rem !important;
+  }
+  .receipt-meta-grid {
+    margin-bottom: 1rem !important;
+    gap: 0.75rem !important;
+  }
+  .receipt-meta-block {
+    padding: 0.75rem !important;
+  }
+  .receipt-table-title {
+    margin-bottom: 0.5rem !important;
+  }
+  .receipt-table {
+    margin-bottom: 1rem !important;
+  }
+  .receipt-table th, 
+  .receipt-table td {
+    padding: 0.5rem 0.75rem !important;
+  }
+  .receipt-total-section {
+    margin-bottom: 1rem !important;
+  }
+  .receipt-total-box {
+    padding: 0.75rem !important;
+  }
+  .receipt-terms {
+    margin-top: 1.5rem !important;
+    padding-top: 0.5rem !important;
+  }
+  .receipt-footer {
+    margin-top: 2rem !important;
   }
 }
 
