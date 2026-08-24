@@ -28,3 +28,5 @@ backend/fee-managment.sqlite
 .idea/
 Thumbs.db
 frontend/.git_backup/
+ngrok.exe
+ngrok.zip
