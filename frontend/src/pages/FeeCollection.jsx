@@ -199,7 +199,7 @@ const FeeCollection = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div className="fee-collection-grid">
         
         {/* Main Form Card */}
         <div className="card">

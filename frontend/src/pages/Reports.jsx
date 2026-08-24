@@ -180,7 +180,7 @@ const Reports = () => {
       </div>
 
       {/* Main Grid: Sidebar + Report Canvas */}
-      <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div className="reports-grid">
         
         {/* Left Side: Navigation Sidebar of Report templates */}
         <div className="card" style={{ padding: '0.75rem', margin: 0 }}>

@@ -95,6 +95,30 @@ body {
   .content-body {
     padding: 1rem;
   }
+  .student-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .page-header > div:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .student-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-group-span-2 {
+    grid-column: span 1 !important;
+  }
 }
 
 /* Typography */
@@ -811,6 +835,34 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 1rem;
 }
 
+/* Responsive Grid Classes */
+.student-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.fee-collection-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.student-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
 @media print {
   @page {
     size: A4 portrait;
@@ -1170,6 +1222,10 @@ h1, h2, h3, h4, h5, h6 {
   .main-header {
     padding: 0 1rem;
   }
+  
+  .fee-collection-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Premium Split-Screen Login Redesign */
@@ -1197,6 +1253,9 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 900px) {
   .login-hero-panel {
     display: none;
+  }
+  .reports-grid {
+    grid-template-columns: 1fr;
   }
 }
 

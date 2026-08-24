@@ -364,7 +364,7 @@ const Students = () => {
           </>
         }
       >
-        <form onSubmit={handleAddSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+        <form onSubmit={handleAddSubmit} className="student-form-grid">
           <div className="form-group">
             <label className="form-label">Admission Number <span style={{ color: 'var(--danger)' }}>*</span></label>
             <input
@@ -440,7 +440,7 @@ const Students = () => {
             {formErrors.monthlyFee && <span className="form-feedback-error">{formErrors.monthlyFee}</span>}
           </div>
 
-          <div className="form-group" style={{ gridColumn: 'span 2' }}>
+          <div className="form-group form-group-span-2">
             <label className="form-label">Residential Address <span style={{ color: 'var(--danger)' }}>*</span></label>
             <textarea
               name="address"
@@ -517,7 +517,7 @@ const Students = () => {
           </>
         }
       >
-        <form onSubmit={handleEditSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+        <form onSubmit={handleEditSubmit} className="student-form-grid">
           <div className="form-group">
             <label className="form-label">Admission Number</label>
             <input
@@ -591,7 +591,7 @@ const Students = () => {
             {formErrors.monthlyFee && <span className="form-feedback-error">{formErrors.monthlyFee}</span>}
           </div>
 
-          <div className="form-group" style={{ gridColumn: 'span 2' }}>
+          <div className="form-group form-group-span-2">
             <label className="form-label">Residential Address <span style={{ color: 'var(--danger)' }}>*</span></label>
             <textarea
               name="address"

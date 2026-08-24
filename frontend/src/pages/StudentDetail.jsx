@@ -102,7 +102,7 @@ const StudentDetail = () => {
       </div>
 
       {/* Main Profile Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div className="student-detail-grid">
         
         {/* Left Column: Personal Information Profile Card */}
         <div className="card" style={{ padding: '2rem 1.5rem', textAlign: 'center' }}>
